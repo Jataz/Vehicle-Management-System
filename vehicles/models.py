@@ -24,6 +24,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     province = models.ForeignKey(Province, on_delete=models.SET_NULL, null=True, blank=True)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)
+    is_Provincial_Transport_Officer = models.BooleanField(default=False)
+    is_HeadOffice_Transport_Officer = models.BooleanField(default=False)
     
 class SubProgramme(models.Model):
     subProgramme_name = models.CharField(max_length=100)
@@ -31,11 +33,15 @@ class SubProgramme(models.Model):
 class Programme(models.Model):
     subProgramme = models.ForeignKey(SubProgramme, on_delete=models.CASCADE)
     programme_name = models.CharField(max_length = 1000)
+
+class FuelType(models.Model):
+    fuel_name = models.CharField(max_length=20)
     
 class Vehicle(models.Model):
     province = models.ForeignKey(Province, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    fuelType = models.ForeignKey(FuelType, on_delete=models.SET_NULL, null=True, blank=True)
     number_plate = models.CharField(max_length=20, unique=True)
     vehicle_type = models.CharField(max_length=100)
     engine_number = models.CharField(max_length=100)
@@ -75,6 +81,13 @@ class MileageRecord(models.Model):
     
     def __str__(self):
         return f"Mileage record for {self.vehicle.number_plate}"
+
+class FuelRecieved(models.Model):
+    date = models.DateTimeField()
+    fuel_type = models.CharField(max_length=50)
+    volume_received = models.DecimalField(max_digits=10, decimal_places=2)
+    cost = models.DecimalField(max_digits=10, decimal_places=2,null=True)
+    invoice_number = models.CharField(max_length=100,null=True)
 
 class FuelDisbursement(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
