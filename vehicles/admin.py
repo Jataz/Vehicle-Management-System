@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Permission
-from .models import FuelDisbursement, Location, Maintenance, MileageRecord, Programme, Province, Status, SubProgramme, UserProfile, Vehicle
+from .models import FuelDisbursement, FuelType, Location, Maintenance, MileageRecord, Programme, Province, Status, SubProgramme, UserProfile, Vehicle
 
 class ProvinceAdmin(admin.ModelAdmin):
     list_display = ('id', 'province_name')
@@ -12,16 +12,19 @@ class StatusAdmin(admin.ModelAdmin):
     list_display = ('id', 'status_name')
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('id','user', 'province', 'location')
+    list_display = ('id','user', 'province', 'location','is_HeadOffice_Transport_Officer','is_Provincial_Transport_Officer')
 
 class SubProgrammeAdmin(admin.ModelAdmin):
     list_display = ('id', 'subProgramme_name')
+
+class FuelTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fuel_name')
 
 class ProgrammeAdmin(admin.ModelAdmin):
     list_display = ('id', 'subProgramme', 'programme_name')
 
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'province', 'location', 'status', 'number_plate', 'vehicle_type', 'engine_number', 'classis_number', 'created_at', 'updated_at')
+    list_display = ('id','province', 'location', 'status', 'number_plate', 'vehicle_type', 'engine_number', 'classis_number','fuelType', 'created_at', 'updated_at')
 
 class MaintenanceAdmin(admin.ModelAdmin):
     list_display = ('id', 'vehicle', 'last_service_mileage', 'is_serviced', 'before_next_service_mileage', 'next_service_mileage', 'next_service_date', 'service_date', 'service_type'\
@@ -43,6 +46,7 @@ admin.site.register(Status, StatusAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(SubProgramme, SubProgrammeAdmin)
 admin.site.register(Programme, ProgrammeAdmin)
+admin.site.register(FuelType, FuelTypeAdmin)
 admin.site.register(Vehicle, VehicleAdmin)
 admin.site.register(Maintenance, MaintenanceAdmin)
 admin.site.register(MileageRecord, MileageRecordAdmin)
